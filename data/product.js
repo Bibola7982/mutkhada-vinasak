@@ -75,7 +75,6 @@ window.PRODUCT = {
   // Add/remove photos here and the whole site updates automatically.
   images: {
     gallery: [
-      "./assets/product-photo-1.png",
       "./assets/product-photo-2.png",
       "./assets/product-photo-3.png",
       "./assets/product-photo-4.png",
@@ -87,7 +86,7 @@ window.PRODUCT = {
       "./assets/product-photo-10.png"
     ],
     // Primary photo used for hero / cards / order summary (first gallery photo).
-    hero:    "./assets/product-photo-1.png",
+    hero:    "./assets/product-photo-2.png",
     qr:      "./assets/payment-qr.png"
   }
 };

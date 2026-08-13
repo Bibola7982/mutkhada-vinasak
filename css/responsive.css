@@ -1,59 +1,112 @@
 /* =========================================================================
    responsive.css — mobile / tablet / desktop breakpoints
+   Goal: phone + tablet + laptop/desktop all friendly, no horizontal scroll,
+   touch-friendly tap targets, readable text, clean single-column on small.
    ========================================================================= */
 
+/* ---------- Tablet & below (<=1024px) ---------- */
 @media (max-width: 1024px) {
-  .hero-grid { grid-template-columns: 1fr; text-align: center; }
+  .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 28px; }
+  .hero-media { order: 1; margin-bottom: 6px; }
+  .hero-text  { order: 2; }
   .hero .desc { margin-left: auto; margin-right: auto; }
   .hero-actions { justify-content: center; }
   .hero-meta { justify-content: center; }
-  .hero-media { order: -1; }
-  .split { grid-template-columns: 1fr; }
+
+  .split { grid-template-columns: 1fr; gap: 28px; }
   .steps { grid-template-columns: repeat(2, 1fr); }
   .footer-grid { grid-template-columns: 1fr 1fr; }
+
+  /* Order page: stack form above summary, drop sticky */
+  .order-grid { grid-template-columns: 1fr; }
+  .summary-card { position: static; top: auto; }
+  .summary-card .sc-img img { width: 45%; }
 }
 
+/* ---------- Mobile nav + core layout (<=860px) ---------- */
 @media (max-width: 860px) {
-  /* Mobile nav */
   .nav {
-    position: fixed; top: calc(var(--header-h)); left: 0; right: 0;
+    position: fixed; top: var(--header-h); left: 0; right: 0;
     background: rgba(255,249,242,.98); backdrop-filter: blur(12px);
     flex-direction: column; align-items: stretch; padding: 12px 18px; gap: 4px;
     border-bottom: 1px solid var(--border);
-    transform: translateY(-120%); transition: transform .3s ease; z-index: 54;
+    transform: translateY(-130%); transition: transform .3s ease; z-index: 54;
+    max-height: calc(100vh - var(--header-h)); overflow-y: auto;
   }
   .nav.open { transform: translateY(0); }
-  .nav a { padding: 12px 14px; border-radius: 10px; }
+  .nav a { padding: 13px 14px; border-radius: 10px; font-size: 1rem; }
   .header-cta .btn { display: none; }
   .hamburger { display: block; }
 
   .pay-grid { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
   .gallery { grid-template-columns: 1fr; }
-  .gallery .thumbs { flex-direction: row; overflow-x: auto; }
+  .gallery .thumbs { flex-direction: row; overflow-x: auto; padding-bottom: 6px; }
   .gallery .thumbs img { width: 74px; flex: 0 0 74px; }
 
   .mobile-cta { display: flex; }
-  /* give bottom room so sticky CTA doesn't cover content */
-  body { padding-bottom: 72px; }
+  body { padding-bottom: 74px; }
   .wa-float { bottom: 84px; }
 }
 
+/* ---------- Small phones (<=560px) ---------- */
 @media (max-width: 560px) {
+  .container { padding: 0 16px; }
+  h1 { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+  h2 { font-size: clamp(1.4rem, 6vw, 2rem); }
+  .section { padding: 40px 0; }
+  .card { padding: 18px; }
+
+  .hero-meta { gap: 14px; }
+  .hero-meta .m b { font-size: 1.1rem; }
+  .hero-media .bottle { width: min(280px, 88%); }
+
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { width: 100%; }
+
   .steps { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
-  .hero-actions .btn { width: 100%; }
-  .container { padding: 0 16px; }
-  .hero-meta { gap: 14px; }
-  .feature { flex-direction: column; }
+  .feature { flex-direction: column; text-align: left; }
+
+  /* form rows become single column so inputs aren't squished */
+  .form-row { grid-template-columns: 1fr; gap: 0; }
+
+  /* tables stay scrollable, slightly tighter */
+  .table-wrap { font-size: .85rem; }
+  table.comp th, table.comp td { padding: 10px 12px; }
+
+  .btn-lg { padding: 14px 22px; font-size: 1rem; }
+  .product-card { max-width: 100% !important; }
 }
 
-@media (min-width: 1600px) {
+/* ---------- Very small phones (<=380px) ---------- */
+@media (max-width: 380px) {
+  .container { padding: 0 13px; }
+  .hero-meta { gap: 10px; }
+  .hero-meta .m b { font-size: 1rem; }
+  .mobile-cta { padding: 9px 12px; }
+  .mobile-cta .btn { font-size: .9rem; padding: 12px 10px; }
+}
+
+/* ---------- Large desktop (>=1400px) ---------- */
+@media (min-width: 1400px) {
   :root { --maxw: 1280px; }
+  .hero-grid { gap: 56px; }
 }
 
-/* Reduced motion */
+/* ---------- Touch devices: friendlier taps, kill hover lift ---------- */
+@media (hover: none) {
+  .btn, .nav a, .faq-q, .pay-opt, .gallery .thumbs img, a { cursor: pointer; }
+  .product-card.hoverable:hover { transform: none; box-shadow: var(--shadow-sm); }
+  .btn-primary:hover, .btn-brown:hover, .btn-outline:hover { transform: none; }
+}
+
+/* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
   .reveal { opacity: 1 !important; transform: none !important; }
 }
