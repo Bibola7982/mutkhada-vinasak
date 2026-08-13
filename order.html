@@ -164,7 +164,7 @@
               <div id="qrSection">
                 <div class="qr-step">
                   <h4 style="margin:0 0 6px;">SCAN TO PAY</h4>
-                  <div class="qr-amount" data-price>₹1999/-</div>
+                  <div class="qr-amount" id="qrFormAmount" data-price>₹1999/-</div>
                   <img id="qrPayImg" src="./assets/payment-qr.png" alt="UPI payment QR code" />
                   <!-- fallback when no dedicated QR for this quantity -->
                   <div id="qrFallback" style="display:none;">
@@ -202,7 +202,7 @@
               <span class="muted" style="font-size:.85rem;">(max 10)</span>
             </div>
             <div class="totals">
-              <div class="row"><span>Product Price</span><span data-price>₹1999/-</span></div>
+              <div class="row"><span>Product Price</span><span id="priceRow" data-price>₹1999/-</span></div>
               <div class="row"><span>Quantity</span><span id="summaryQty">1</span></div>
               <div class="row"><span>Subtotal</span><span id="subtotal">₹1999/-</span></div>
               <div class="row"><span>Shipping</span><span id="shipping">FREE</span></div>

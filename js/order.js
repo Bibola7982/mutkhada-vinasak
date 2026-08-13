@@ -55,6 +55,9 @@
     $("shipping").textContent = "FREE";
     $("total").textContent = money(total);
     $("summaryQty").textContent = qty;
+    // effective per-unit price (reflects bulk discount)
+    const priceRow = $("priceRow");
+    if (priceRow) priceRow.textContent = money(Math.round(total / qty)) + " / unit";
     // keep QR section in sync if it is already shown
     syncQrSection();
     return { qty: qty, subtotal: subtotal, total: total };
@@ -191,8 +194,11 @@
     const qrMap = (P.images && P.images.qrByQty) || {};
     const qrImgEl = document.getElementById("qrPayImg");
     const qrFallback = $("qrFallback");
+    // Update BOTH the form QR amount and the success-page amount
     const amountEl = document.getElementById("qrAmount");
     if (amountEl) amountEl.textContent = money(total);
+    const formAmountEl = document.getElementById("qrFormAmount");
+    if (formAmountEl) formAmountEl.textContent = money(total);
     const code = qrMap[String(qty)];
     if (code) {
       if (qrImgEl) { qrImgEl.src = code; qrImgEl.style.display = "block"; }
