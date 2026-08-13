@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" role="img" aria-label="MUTKHADA VINASAK">
+  <defs>
+    <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E58A3A"/>
+      <stop offset="1" stop-color="#D96B27"/>
+    </linearGradient>
+  </defs>
+  <!-- leaf/droplet mark -->
+  <g transform="translate(4,4)">
+    <path d="M24 2 C38 18 46 30 24 50 C2 30 10 18 24 2 Z" fill="url(#lg)"/>
+    <path d="M24 10 L24 44" stroke="#FFF" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+  </g>
+  <text x="60" y="26" font-family="'Poppins','Segoe UI',sans-serif" font-size="20" font-weight="700" fill="#6E321A" letter-spacing="0.5">MUTKHADA</text>
+  <text x="60" y="46" font-family="'Poppins','Segoe UI',sans-serif" font-size="16" font-weight="600" fill="#D96B27" letter-spacing="2">VINASAK</text>
+</svg>

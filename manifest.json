@@ -1,0 +1,17 @@
+{
+  "name": "MUTKHADA VINASAK",
+  "short_name": "MV",
+  "description": "MUTKHADA VINASAK Ayurvedic Powder 150 gm — order with COD or UPI QR payment.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FFF9F2",
+  "theme_color": "#E58A3A",
+  "icons": [
+    {
+      "src": "./assets/favicon.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}

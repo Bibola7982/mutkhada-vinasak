@@ -1,0 +1,59 @@
+/* =========================================================================
+   responsive.css — mobile / tablet / desktop breakpoints
+   ========================================================================= */
+
+@media (max-width: 1024px) {
+  .hero-grid { grid-template-columns: 1fr; text-align: center; }
+  .hero .desc { margin-left: auto; margin-right: auto; }
+  .hero-actions { justify-content: center; }
+  .hero-meta { justify-content: center; }
+  .hero-media { order: -1; }
+  .split { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 860px) {
+  /* Mobile nav */
+  .nav {
+    position: fixed; top: calc(var(--header-h)); left: 0; right: 0;
+    background: rgba(255,249,242,.98); backdrop-filter: blur(12px);
+    flex-direction: column; align-items: stretch; padding: 12px 18px; gap: 4px;
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-120%); transition: transform .3s ease; z-index: 54;
+  }
+  .nav.open { transform: translateY(0); }
+  .nav a { padding: 12px 14px; border-radius: 10px; }
+  .header-cta .btn { display: none; }
+  .hamburger { display: block; }
+
+  .pay-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .gallery { grid-template-columns: 1fr; }
+  .gallery .thumbs { flex-direction: row; overflow-x: auto; }
+  .gallery .thumbs img { width: 74px; flex: 0 0 74px; }
+
+  .mobile-cta { display: flex; }
+  /* give bottom room so sticky CTA doesn't cover content */
+  body { padding-bottom: 72px; }
+  .wa-float { bottom: 84px; }
+}
+
+@media (max-width: 560px) {
+  .steps { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .hero-actions .btn { width: 100%; }
+  .container { padding: 0 16px; }
+  .hero-meta { gap: 14px; }
+  .feature { flex-direction: column; }
+}
+
+@media (min-width: 1600px) {
+  :root { --maxw: 1280px; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
