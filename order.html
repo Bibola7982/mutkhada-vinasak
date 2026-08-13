@@ -166,9 +166,20 @@
                   <h4 style="margin:0 0 6px;">SCAN TO PAY</h4>
                   <div class="qr-amount" data-price>₹1999/-</div>
                   <img id="qrPayImg" src="./assets/payment-qr.png" alt="UPI payment QR code" />
+                  <!-- fallback when no dedicated QR for this quantity -->
+                  <div id="qrFallback" style="display:none;">
+                    <p class="muted" style="margin:8px 0 4px;">No pre-generated code for this quantity.</p>
+                    <p class="muted" style="font-size:.9rem;">Pay <b data-upi-amount>₹0</b> to UPI ID:</p>
+                    <p style="font-weight:700;word-break:break-all;" data-upi-id>mandeepyadavrampura@okaxis</p>
+                  </div>
                   <p class="muted" style="margin:6px 0 0;">UPI / QR PAYMENT</p>
                   <p class="muted" style="font-size:.85rem;">"Use any supported UPI app to scan and pay."</p>
-                  <p class="muted" style="font-size:.82rem;">After payment, click the button below to confirm your order.</p>
+                  <p class="muted" style="font-size:.82rem;">After payment, enter the UTR / Reference number and confirm your order.</p>
+                  <div class="field" id="utrField" style="margin-top:14px;text-align:left;">
+                    <label>UTR / Reference Number <span class="req">*</span></label>
+                    <input id="utrInput" type="text" inputmode="text" autocomplete="off" placeholder="e.g. 3124 5678 9012" />
+                    <span class="err"></span>
+                  </div>
                 </div>
               </div>
 
@@ -226,9 +237,15 @@
             <div class="qr-amount" id="qrAmount">₹1999/-</div>
             <img id="qrPayImg2" src="./assets/payment-qr.png" alt="UPI payment QR code" />
             <p class="muted" style="font-size:.85rem;margin-top:8px;">Use any supported UPI app to scan and pay.</p>
+            <div class="field" id="utrField2" style="margin-top:14px;text-align:left;max-width:360px;margin-left:auto;margin-right:auto;">
+              <label>UTR / Reference Number <span class="req">*</span></label>
+              <input id="utrInput2" type="text" inputmode="text" autocomplete="off" placeholder="e.g. 3124 5678 9012" />
+              <span class="err"></span>
+            </div>
             <ol class="muted" style="text-align:left;font-size:.85rem;max-width:320px;margin:10px auto;">
               <li>Scan the QR code.</li>
               <li>Complete the payment.</li>
+              <li>Enter the UTR / Reference number above.</li>
               <li>Return to this page.</li>
               <li>Click <b>"I HAVE COMPLETED PAYMENT"</b>.</li>
               <li>Confirm the order on WhatsApp.</li>

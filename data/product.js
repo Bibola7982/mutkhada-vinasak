@@ -15,11 +15,28 @@ window.PRODUCT = {
     "Traditional Ayurvedic formulation presented in a convenient powder format.",
 
   // --- Pricing / weight ---
+  // Base unit price (single unit / quantity 1). Bulk pricing is per-quantity
+  // below; quantity 1 uses `price`, 2 and 3 use the fixed bulk amounts, and
+  // 4+ derive from the per-unit bulk rate.
   price: 1999,
   currencySymbol: "₹",
   weight: "150 gm",
   maxQuantity: 10,
   shipping: "FREE",
+
+  // Per-quantity total amount (bulk pricing). Keyed by quantity.
+  // qty 1 -> single unit price; 2 -> 3500; 3 -> 4999; 4+ -> derived (see order.js).
+  // If a quantity has no fixed price here it is computed as bulkRate * qty.
+  bulkPricing: {
+    "1": 1999,
+    "2": 3500,
+    "3": 4999
+  },
+  bulkRate: 1499, // per-unit rate used for qty >= 4 (4999/3 approx, but set explicitly)
+
+  // UPI recipient (shown as fallback when no static QR image is available)
+  upiId: "mandeepyadavrampura@okaxis",
+  upiName: "Mandeep Yadav",
 
   // --- Manufacturing info ---
   batch: "MV001",
@@ -87,6 +104,14 @@ window.PRODUCT = {
     ],
     // Primary photo used for hero / cards / order summary (first gallery photo).
     hero:    "./assets/product-photo-2.png",
-    qr:      "./assets/payment-qr.png"
+    qr:      "./assets/payment-qr.png",
+    // Per-quantity UPI QR images (static codes you supplied).
+    // Keyed by quantity: "1" = single unit, "2" = 2-unit code, "3" = 3-unit code.
+    // Quantities 4+ have no dedicated code -> order.js falls back to UPI id + amount.
+    qrByQty: {
+      "1": "./assets/payment-qr.png",
+      "2": "./assets/payment-qr-2u.png",
+      "3": "./assets/payment-qr-3u.png"
+    }
   }
 };

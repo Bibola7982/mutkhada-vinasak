@@ -32,6 +32,16 @@
   }
 
   // ---------- quantity / price ----------
+  // Total amount for the chosen quantity using bulk pricing table.
+  function qtyTotal(qty) {
+    if (P.bulkPricing && P.bulkPricing[String(qty)] != null) {
+      return P.bulkPricing[String(qty)];
+    }
+    // derived: bulkRate per unit for qty >= 4 (or any missing key)
+    const rate = P.bulkRate || P.price;
+    return rate * qty;
+  }
+
   function currentQty() {
     const q = parseInt($("qty").value, 10);
     return isNaN(q) ? 1 : Math.max(1, Math.min(P.maxQuantity, q));
@@ -39,13 +49,14 @@
 
   function calculateTotal() {
     const qty = currentQty();
-    const subtotal = P.price * qty;
-    const shipping = 0; // FREE
-    const total = subtotal + shipping;
+    const total = qtyTotal(qty);
+    const subtotal = total; // single line; shipping free
     $("subtotal").textContent = money(subtotal);
     $("shipping").textContent = "FREE";
     $("total").textContent = money(total);
     $("summaryQty").textContent = qty;
+    // keep QR section in sync if it is already shown
+    syncQrSection();
     return { qty: qty, subtotal: subtotal, total: total };
   }
 
@@ -114,6 +125,15 @@
     if (!pm) { setError("payment", "Please select a payment method."); ok = false; }
     else { clearError("payment"); }
 
+    // UTR required for QR (online) payment
+    if (pm === "qr") {
+      const utrEl = $("utrInput");
+      const utr = utrEl ? utrEl.value.trim() : "";
+      if (!utr) { setError("utr", "Please enter the UTR / Reference number after payment."); ok = false; }
+      else if (!/^[A-Za-z0-9]{6,}$/.test(utr)) { setError("utr", "UTR should be at least 6 letters/digits."); ok = false; }
+      else { setValid("utr"); }
+    }
+
     return ok;
   }
 
@@ -121,6 +141,8 @@
   function buildOrder() {
     const t = calculateTotal();
     const pm = getPaymentMethod();
+    const utrEl = $("utrInput") || $("utrInput2");
+    const utr = utrEl ? utrEl.value.trim() : "";
     return {
       orderId: generateOrderId(),
       product: P.productName,
@@ -128,6 +150,7 @@
       price: P.price,
       total: t.total,
       paymentMethod: pm,
+      utr: utr,
       customerName: $("fullName").value.trim(),
       phone: $("mobile").value.trim(),
       email: ($("email").value || "").trim(),
@@ -160,6 +183,33 @@
     }
   }
 
+  function syncQrSection() {
+    const qrSection = $("qrSection");
+    if (!qrSection || qrSection.style.display === "none") return;
+    const qty = currentQty();
+    const total = qtyTotal(qty);
+    const qrMap = (P.images && P.images.qrByQty) || {};
+    const qrImgEl = document.getElementById("qrPayImg");
+    const qrFallback = $("qrFallback");
+    const amountEl = document.getElementById("qrAmount");
+    if (amountEl) amountEl.textContent = money(total);
+    const code = qrMap[String(qty)];
+    if (code) {
+      if (qrImgEl) { qrImgEl.src = code; qrImgEl.style.display = "block"; }
+      if (qrFallback) qrFallback.style.display = "none";
+    } else {
+      // No dedicated QR for this quantity -> show UPI id + amount text
+      if (qrImgEl) qrImgEl.style.display = "none";
+      if (qrFallback) {
+        qrFallback.style.display = "block";
+        const amt = qrFallback.querySelector("[data-upi-amount]");
+        if (amt) amt.textContent = money(total);
+        const upi = qrFallback.querySelector("[data-upi-id]");
+        if (upi) upi.textContent = P.upiId || "";
+      }
+    }
+  }
+
   // ---------- UI flow ----------
   function showConfirmation(order) {
     const formView = $("orderFormView");
@@ -179,12 +229,16 @@
     if (order.paymentMethod === "qr") {
       // show QR payment confirmation step
       const qrStep = $("qrPayStep");
+      const qrMap = (P.images && P.images.qrByQty) || {};
+      const code = qrMap[String(order.quantity)];
       if (qrStep) {
         qrStep.style.display = "block";
         $("qrOrderId").textContent = order.orderId;
         $("qrAmount").textContent = money(order.total);
         const qrImg = document.getElementById("qrPayImg");
-        if (qrImg) qrImg.setAttribute("src", P.images.qr);
+        if (qrImg) qrImg.setAttribute("src", code || P.images.qr);
+        const qrImg2 = document.getElementById("qrPayImg2");
+        if (qrImg2) qrImg2.setAttribute("src", code || P.images.qr);
       }
       const codNote = $("codNote");
       if (codNote) codNote.style.display = "none";
@@ -262,6 +316,7 @@
     function syncPay() {
       const qrCard = $("qrSection");
       if (qrCard) qrCard.style.display = (payQR && payQR.checked) ? "block" : "none";
+      syncQrSection();
     }
     if (payQR) payQR.addEventListener("change", syncPay);
     if (payCOD) payCOD.addEventListener("change", syncPay);

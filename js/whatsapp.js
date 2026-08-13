@@ -22,9 +22,12 @@
     lines.push("Product: " + P.productName);
     lines.push("Net Weight: " + P.weight);
     lines.push("Quantity: " + order.quantity);
-    lines.push("Total Amount: " + sym + order.total);
+    lines.push("Total Amount Paid: " + sym + order.total);
     lines.push("");
     lines.push("Payment Method: " + payLabel);
+    if (order.paymentMethod === "qr") {
+      lines.push("UTR / Reference No: " + (order.utr || "N/A"));
+    }
     lines.push("");
     lines.push("Customer Details:");
     lines.push("Name: " + order.customerName);
